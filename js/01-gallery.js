@@ -44,23 +44,43 @@ function onClick(e) {
     return;
   }
 
-  const modalWindow = basicLightbox.create(
+  const instance = basicLightbox.create(
     `
   	<img width="1400" height="900" src="${imgLink.href}">
   `
   );
 
-  modalWindow.show();
+  instance.show();
 
-  document.addEventListener("keydown", closeImageModal);
+  window.addEventListener("keydown", closeImageModal);
 
   function closeImageModal(e) {
     if (e.key === "Escape") {
-      // return document
-      //   .querySelector(".basicLightbox")
-      //   .classList.remove("basicLightbox--visible");
-
-      return modalWindow.close();
+      console.log(window.event);
+      instance.close();
+      window.removeEventListener("keydown", closeImageModal);
+      return;
     }
   }
+
+  window.addEventListener("click", removeListenerClick);
+
+  function removeListenerClick() {
+    window.removeEventListener("click", removeListenerClick);
+  }
+
+  //// onShow: (instance)
+
+  // document.onkeydown = function (evt) {
+  //   evt = evt || window.event;
+  //   var isEscape = false;
+  //   if ("key" in evt) {
+  //     isEscape = evt.key === "Escape" || evt.key === "Esc";
+  //   } else {
+  //     isEscape = evt.keyCode === 27;
+  //   }
+  //   if (isEscape) {
+  //     instance.close();
+  //   }
+  // };
 }

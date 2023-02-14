@@ -17,7 +17,7 @@ function createGalleryMarkup(galleryItems) {
      <img
        class="gallery__image"
        src="${preview}"
-       data-source="large-image.jpg"
+       data-source="${original}"
        alt="${description}"
      />
    </a>
@@ -38,28 +38,27 @@ galleryListEl.addEventListener("click", onClick);
 function onClick(e) {
   e.preventDefault();
 
-  let imgLink = e.target.closest("a");
+  let img = e.target.nodeName;
 
-  if (!imgLink) {
+  if (!img) {
     return;
   }
 
   const instance = basicLightbox.create(
     `
-  	<img width="1400" height="900" src="${imgLink.href}">
-  `
+  	<img width="1400" height="900" src="${e.target.dataset.source}">
+  `,
+    {
+      onShow: () => document.addEventListener("keydown", onEsc),
+      onClose: () => document.removeEventListener("keydown", onEsc),
+    }
   );
 
   instance.show();
 
-  window.addEventListener("keydown", closeImageModal);
-
-  function closeImageModal(e) {
-    if (e.key === "Escape") {
-      console.log(window.event);
+  function onEsc(e) {
+    if (e.code === "Escape" || e.key === "Escape") {
       instance.close();
-      window.removeEventListener("keydown", closeImageModal);
-      return;
     }
   }
 
@@ -69,18 +68,37 @@ function onClick(e) {
     window.removeEventListener("click", removeListenerClick);
   }
 
-  //// onShow: (instance)
+  // console.log(e.target.nodeName);
+  // console.log(e.target.dataset.source);
 
-  // document.onkeydown = function (evt) {
-  //   evt = evt || window.event;
-  //   var isEscape = false;
-  //   if ("key" in evt) {
-  //     isEscape = evt.key === "Escape" || evt.key === "Esc";
-  //   } else {
-  //     isEscape = evt.keyCode === 27;
-  //   }
-  //   if (isEscape) {
+  // let imgLink = e.target.closest("a");
+
+  // if (!imgLink) {
+  //   return;
+  // }
+
+  // const instance = basicLightbox.create(
+  //   `
+  // 	<img width="1400" height="900" src="${imgLink.href}">
+  // `
+  // );
+
+  // instance.show();
+
+  // window.addEventListener("keydown", closeImageModal);
+
+  // function closeImageModal(e) {
+  //   if (e.key === "Escape") {
+  //     console.log(window.event);
   //     instance.close();
+  //     window.removeEventListener("keydown", closeImageModal);
+  //     return;
   //   }
-  // };
+  // }
+
+  // window.addEventListener("click", removeListenerClick);
+
+  // function removeListenerClick() {
+  //   window.removeEventListener("click", removeListenerClick);
+  // }
 }

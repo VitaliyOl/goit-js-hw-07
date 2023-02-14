@@ -40,7 +40,7 @@ function onClick(e) {
 
   let img = e.target.nodeName;
 
-  if (!img) {
+  if (img != "IMG") {
     return;
   }
 
@@ -61,15 +61,6 @@ function onClick(e) {
       instance.close();
     }
   }
-
-  window.addEventListener("click", removeListenerClick);
-
-  function removeListenerClick() {
-    window.removeEventListener("click", removeListenerClick);
-  }
-
-  // console.log(e.target.nodeName);
-  // console.log(e.target.dataset.source);
 
   // let imgLink = e.target.closest("a");
 
@@ -94,11 +85,5 @@ function onClick(e) {
   //     window.removeEventListener("keydown", closeImageModal);
   //     return;
   //   }
-  // }
-
-  // window.addEventListener("click", removeListenerClick);
-
-  // function removeListenerClick() {
-  //   window.removeEventListener("click", removeListenerClick);
   // }
 }
